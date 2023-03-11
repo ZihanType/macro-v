@@ -1,0 +1,25 @@
+[package]
+name = "macro-v"
+version = "0.1.0"
+edition = "2021"
+authors = ["zihan <ZihanType@proton.me>"]
+license = "MIT/Apache-2.0"
+homepage = "https://github.com/ZihanType/macro-v"
+repository = "https://github.com/ZihanType/macro-v"
+description = "Attribute macro for making the visibility of the `macro_rules!` macro the same as other items."
+keywords = ["macro_rules", "visibility", "declarative macros"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = { version = "1", default-features = false }
+quote = { version = "1", default-features = false }
+syn = { version = "1", default-features = false, features = [
+    "parsing",
+    "proc-macro",
+    "printing",
+    "full",
+] }
