@@ -67,7 +67,7 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
             break;
         }
 
-        if !matches!(attr.style, AttrStyle::Outer) || !attr.path.is_ident("doc") {
+        if !attr.path.is_ident("doc") {
             continue;
         }
 
