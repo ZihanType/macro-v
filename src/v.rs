@@ -90,19 +90,19 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
         }
     }
 
-    let blank_line: Option<TokenStream> = if has_doc_comment {
+    let blank_line = if has_doc_comment {
         Some(quote!(#[doc = ""]))
     } else {
         None
     };
 
-    let (doc_hidden, doc_inline): (Option<TokenStream>, Option<TokenStream>) = if has_doc_hidden {
+    let (doc_hidden, doc_inline) = if has_doc_hidden {
         (None, None)
     } else {
         (Some(quote!(#[doc(hidden)])), Some(quote!(#[doc(inline)])))
     };
 
-    let export: Option<TokenStream> = if let Visibility::Public(_) = vis {
+    let export = if let Visibility::Public(_) = vis {
         Some(quote!(#[macro_export]))
     } else {
         None
