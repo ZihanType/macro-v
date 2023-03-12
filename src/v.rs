@@ -8,7 +8,7 @@ use quote::{format_ident, quote};
 use syn::{
     braced,
     parse::{Parse, ParseStream},
-    AttrStyle, Attribute, Ident, Lit, Meta, MetaList, MetaNameValue, NestedMeta, Token, Visibility,
+    Attribute, Ident, Lit, Meta, MetaList, MetaNameValue, NestedMeta, Token, Visibility,
 };
 
 pub(crate) struct MacroDefinition {
