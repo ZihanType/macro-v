@@ -48,4 +48,6 @@ macro_rules! __example_macro_2228885075611141983 { () => {}; }
 pub use __example_macro_2228885075611141983 as example_macro;
 ```
 
-But because of using `#[doc(hidden)]`, you must use `#[doc(inline)]` attribute when re-exporting, otherwise re-exported macro won't be visible in the document. When using `#[macro_v]`, `#[doc(inline)]` will be added automatically, but if you want to re-export manually, you must remember to add `#[doc(inline)]`, which is the only problem.
+## Limitations
+
+Because of using `#[doc(hidden)]`, you must use `#[doc(inline)]` attribute when re-exporting, otherwise re-exported macro won't be visible in the document. When using `#[macro_v]`, `#[doc(inline)]` will be added automatically, but **if you want to manually re-export the macro, you must also manually add `#[doc(inline)]`**, which is the only problem.

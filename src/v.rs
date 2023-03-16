@@ -112,7 +112,7 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
         #doc_hidden
         #(#attrs)*
         #blank_line
-        #[doc = "**[macro-v]**: If you want to use `pub use` to re-export and see the macro in the doc, you must use `#[doc(inline)]`."]
+        #[doc = "**[macro-v]**: If you want to use `pub use` to re-export and see the macro in the doc, you must add `#[doc(inline)]`."]
         #export
         #macro_rules #bang_token #real_name { #tokens }
 
