@@ -8,7 +8,7 @@ use quote::{format_ident, quote};
 use syn::{
     braced,
     parse::{Parse, ParseStream},
-    Attribute, Ident, Lit, Meta, MetaList, MetaNameValue, NestedMeta, Token, Visibility,
+    Attribute, Ident, Meta, Token, Visibility,
 };
 
 pub(crate) struct MacroDefinition {
@@ -67,26 +67,23 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
             break;
         }
 
-        if !attr.path.is_ident("doc") {
+        if !attr.path().is_ident("doc") {
             continue;
         }
 
-        if !has_doc_comment {
-            if let Ok(Meta::NameValue(MetaNameValue {
-                lit: Lit::Str(_), ..
-            })) = attr.parse_meta()
-            {
-                has_doc_comment = true;
-                continue;
-            }
+        if !has_doc_comment && matches!(attr.meta, Meta::NameValue(_)) {
+            has_doc_comment = true;
+            continue;
         }
 
-        if !has_doc_hidden {
-            if let Ok(Meta::List(MetaList { nested, .. })) = attr.parse_meta() {
-                has_doc_hidden = nested
-                    .iter()
-                    .any(|n| matches!(n, NestedMeta::Meta(Meta::Path(p)) if p.is_ident("hidden")));
-            }
+        if !has_doc_hidden && matches!(attr.meta, Meta::List(_)) {
+            attr.parse_nested_meta(|meta| {
+                if meta.path.is_ident("hidden") {
+                    has_doc_hidden = true;
+                    return Ok(());
+                }
+                Ok(())
+            })?;
         }
     }
 
