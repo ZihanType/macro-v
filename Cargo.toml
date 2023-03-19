@@ -8,6 +8,7 @@ homepage = "https://github.com/ZihanType/macro-v"
 repository = "https://github.com/ZihanType/macro-v"
 description = "Attribute macro for making the visibility of the `macro_rules!` macro the same as other items."
 keywords = ["macro_rules", "visibility"]
+include = ["src/**/*", "Cargo.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
