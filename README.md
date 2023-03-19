@@ -1,7 +1,6 @@
 # macro-v
 
 [![Crates.io version](https://img.shields.io/crates/v/macro-v.svg?style=flat-square)](https://crates.io/crates/macro-v)
-
 [![docs.rs docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://docs.rs/macro-v)
 
 This crate provides an attribute macro for making the visibility of the `macro_rules!` macro the same as other items.
