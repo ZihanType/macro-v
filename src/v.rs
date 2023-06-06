@@ -88,21 +88,32 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
     }
 
     let blank_line = if has_doc_comment {
-        Some(quote!(#[doc = ""]))
+        quote! {
+            #[doc = ""]
+        }
     } else {
-        None
+        quote! {}
     };
 
     let (doc_hidden, doc_inline) = if has_doc_hidden {
-        (None, None)
+        (quote! {}, quote! {})
     } else {
-        (Some(quote!(#[doc(hidden)])), Some(quote!(#[doc(inline)])))
+        (
+            quote! {
+                #[doc(hidden)]
+            },
+            quote! {
+                #[doc(inline)]
+            },
+        )
     };
 
     let export = if let Visibility::Public(_) = vis {
-        Some(quote!(#[macro_export]))
+        quote! {
+            #[macro_export]
+        }
     } else {
-        None
+        quote! {}
     };
 
     let expand = quote! {
