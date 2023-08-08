@@ -59,11 +59,10 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
 
     let real_name = format_ident!("__{}_{}", name, RandomState::new().build_hasher().finish());
 
-    let mut has_doc_comment = false;
     let mut has_doc_hidden = false;
 
     for attr in attrs.iter() {
-        if has_doc_comment && has_doc_hidden {
+        if has_doc_hidden {
             break;
         }
 
@@ -71,12 +70,7 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
             continue;
         }
 
-        if !has_doc_comment && matches!(attr.meta, Meta::NameValue(_)) {
-            has_doc_comment = true;
-            continue;
-        }
-
-        if !has_doc_hidden && matches!(attr.meta, Meta::List(_)) {
+        if matches!(attr.meta, Meta::List(_)) {
             attr.parse_nested_meta(|meta| {
                 if meta.path.is_ident("hidden") {
                     has_doc_hidden = true;
@@ -87,16 +81,13 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
         }
     }
 
-    let blank_line = if has_doc_comment {
-        quote! {
-            #[doc = ""]
-        }
-    } else {
-        quote! {}
-    };
-
-    let (doc_hidden, doc_inline) = if has_doc_hidden {
-        (quote! {}, quote! {})
+    let (origin_doc_attr, reexport_doc_attr) = if has_doc_hidden {
+        (
+            quote! {},
+            quote! {
+                #[doc(hidden)]
+            },
+        )
     } else {
         (
             quote! {
@@ -117,14 +108,12 @@ pub(crate) fn generate(vis: Visibility, macro_def: MacroDefinition) -> syn::Resu
     };
 
     let expand = quote! {
-        #doc_hidden
+        #origin_doc_attr
         #(#attrs)*
-        #blank_line
-        #[doc = "**[macro-v]**: If you want to use `pub use` to re-export and see the macro in the doc, you must add `#[doc(inline)]`."]
         #export
         #macro_rules #bang_token #real_name { #tokens }
 
-        #doc_inline
+        #reexport_doc_attr
         #vis use #real_name as #name;
     };
 
